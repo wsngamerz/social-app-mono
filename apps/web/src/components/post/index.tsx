@@ -26,11 +26,17 @@ import {Post as PostType, Profile} from "@repo/drizzle/schema";
 import ClickWrapper from "@/components/post/click-wrapper";
 
 type PostProps = {
-    post: PostType & { user: Profile },
-    displayActions?: boolean
+    post: PostType & { user: Profile } & Record<string, unknown>,
+    displayActions?: boolean,
+    statistics?: {
+        likes: number,
+        comments: number,
+        bookmarks: number,
+        shares: number
+    }
 };
 
-export function Post({post, displayActions = false}: PostProps) {
+export function Post({post, displayActions = false, statistics}: PostProps) {
     return (
         <Card>
             <CardHeader className="flex flex-row gap-2 space-y-0 items-center">
@@ -156,19 +162,19 @@ export function Post({post, displayActions = false}: PostProps) {
                 <CardFooter className="gap-2 flex-wrap">
                     <PostInteraction disabled>
                         <FaHeart/>
-                        <span>Like</span>
+                        <span>{statistics ? statistics.likes : "Like"}</span>
                     </PostInteraction>
                     <PostInteraction>
                         <FaComment/>
-                        <span>Comment</span>
+                        <span>{statistics ? statistics.comments : "Comment"}</span>
                     </PostInteraction>
                     <PostInteraction disabled>
                         <FaBookmark/>
-                        <span>Bookmark</span>
+                        <span>{statistics ? statistics.bookmarks : "Bookmark"}</span>
                     </PostInteraction>
                     <PostInteraction disabled>
                         <FaShare/>
-                        <span>Share</span>
+                        <span>{statistics ? statistics.shares : "Share"}</span>
                     </PostInteraction>
                 </CardFooter>
             )}
