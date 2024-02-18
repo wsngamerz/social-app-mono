@@ -7,7 +7,9 @@ export default function Navbar() {
     return (
         <div className="bg-gray-100 dark:bg-slate-800 border-t w-full h-16 sticky top-0 flex items-center sm:hidden p-2 px-4 z-10 border-b">
             <div className="absolute border border-slate-950 rounded-full">
-                <CurrentUserAvatar />
+                <Link href="/profile">
+                    <CurrentUserAvatar />
+                </Link>
             </div>
             <div className="flex flex-grow items-center justify-center">
                 <div className="inline-block">
