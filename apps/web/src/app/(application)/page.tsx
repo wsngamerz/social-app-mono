@@ -2,7 +2,7 @@ import Post from "@/components/post";
 import ComposeCard from "@/components/post/compose/compose-card";
 import {db} from "@repo/drizzle";
 import NoPosts from "@/components/post/no-posts";
-import {count, eq, getTableColumns} from "drizzle-orm";
+import {count, desc, eq, getTableColumns} from "drizzle-orm";
 import {posts, profiles, replies} from "@repo/drizzle/schema";
 
 export default async function HomePage() {
@@ -14,7 +14,8 @@ export default async function HomePage() {
         .from(posts)
         .leftJoin(replies, eq(posts.id, replies.postId))
         .leftJoin(profiles, eq(posts.userId, profiles.id))
-        .groupBy(posts.id, profiles.id);
+        .groupBy(posts.id, profiles.id)
+        .orderBy(desc(posts.createdAt));
 
     return (
         <>
