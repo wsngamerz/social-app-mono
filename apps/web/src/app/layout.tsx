@@ -1,14 +1,15 @@
 import "@repo/ui/globals.css";
 import "./highlight.css";
 
-import type { Metadata, Viewport } from "next";
-import { Inter as FontSans } from "next/font/google";
+import type {Metadata, Viewport} from "next";
+import {Inter as FontSans} from "next/font/google";
 import React from "react";
-import { cn } from "@repo/ui/lib/utils";
-import { Toaster } from "@repo/ui/components/ui/sonner";
-import { ThemeProvider } from "@/app/theme-provider";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import {cn} from "@repo/ui/lib/utils";
+import {Toaster} from "@repo/ui/components/ui/sonner";
+import {ThemeProvider} from "@/app/theme-provider";
+import {Analytics} from "@vercel/analytics/next";
+import {SpeedInsights} from "@vercel/speed-insights/next"
+import PullToRefresh from "@/app/pull-to-refresh";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -30,30 +31,32 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({
-    children,
-}: Readonly<{ children: React.ReactNode }>) {
+                                       children,
+                                   }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-            <body
-                className={cn(
-                    "min-h-screen bg-background font-sans antialiased",
-                    fontSans.variable,
-                )}
-            >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="light"
-                    // enableSystem
-                    disableTransitionOnChange
-                >
-                    <div className="w-full h-screen flex justify-center items-center relative">
-                        {children}
-                    </div>
-                    <Toaster position="top-right" />
-                </ThemeProvider>
-                <Analytics />
-                <SpeedInsights />
-            </body>
+        <body
+            className={cn(
+                "min-h-screen bg-background font-sans antialiased",
+                fontSans.variable,
+            )}
+        >
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            // enableSystem
+            disableTransitionOnChange
+        >
+            <PullToRefresh>
+                <div className="w-full h-screen flex justify-center items-center relative">
+                    {children}
+                </div>
+            </PullToRefresh>
+            <Toaster position="top-right"/>
+        </ThemeProvider>
+        <Analytics/>
+        <SpeedInsights/>
+        </body>
         </html>
     );
 }
