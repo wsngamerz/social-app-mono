@@ -23,13 +23,15 @@ import {
 } from "@repo/ui/components/ui/dropdown-menu";
 import Markdown from "@/components/shared/markdown";
 import {Post as PostType, Profile} from "@repo/drizzle/schema";
+import ClickWrapper from "@/components/post/click-wrapper";
 
 type PostProps = {
     post: PostType & { user: Profile }
 };
 
-export default function Post({post}: PostProps) {
+export function Post({post}: PostProps) {
     return (
+
         <Card>
             <CardHeader className="flex flex-row gap-2 space-y-0 items-center">
                 <HoverCard>
@@ -66,7 +68,7 @@ export default function Post({post}: PostProps) {
                     <HoverCardContent className="w-80">
                         <div className="flex justify-between space-x-4">
                             <Avatar>
-                                <AvatarImage src={post.user.profileImage || ""} />
+                                <AvatarImage src={post.user.profileImage || ""}/>
                                 <AvatarFallback>
                                     {post.user.displayName?.split(" ")
                                         .map((name) => name[0])
@@ -177,5 +179,13 @@ function PostInteraction({children}: { children: React.ReactNode }) {
         <Button variant="outline" className="grow gap-2 text-xs p-2 h-auto">
             {children}
         </Button>
+    );
+}
+
+export default function WrappedPost(props: PostProps) {
+    return (
+        <ClickWrapper id={props.post.id}>
+            <Post {...props} />
+        </ClickWrapper>
     );
 }
