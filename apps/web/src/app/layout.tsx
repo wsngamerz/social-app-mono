@@ -1,4 +1,6 @@
 import "@repo/ui/globals.css";
+import "./highlight.css";
+
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import React from "react";

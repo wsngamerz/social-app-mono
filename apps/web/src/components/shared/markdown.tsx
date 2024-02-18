@@ -1,10 +1,11 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import remarkEmoji from "remark-emoji";
+import remarkTwemoji from "remark-twemoji";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, {defaultSchema, Options} from "rehype-sanitize";
-import remarkEmoji from "remark-emoji";
-import remarkTwemoji from "remark-twemoji";
+import rehypeHighlight from "rehype-highlight";
 
 export default function Markdown({ content }: MarkdownProps) {
     return (
@@ -22,7 +23,8 @@ export default function Markdown({ content }: MarkdownProps) {
                             ...defaultSchema.attributes,
                             "img" : ["src", "longdesc", "loading", "alt", "className"],
                         }
-                    } as Options]
+                    } as Options],
+                    rehypeHighlight
                 ]}
             >
                 {content}
