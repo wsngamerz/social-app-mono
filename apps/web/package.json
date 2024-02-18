@@ -25,9 +25,12 @@
     "react-markdown": "^9.0.1",
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
+    "remark-emoji": "^4.0.1",
     "remark-gfm": "^4.0.0",
+    "remark-twemoji": "^0.1.1",
     "sonner": "^1.4.0",
     "swr": "^2.2.5",
+    "twemoji": "^14.0.2",
     "usehooks-ts": "^2.14.0",
     "zod": "^3.22.4"
   },

@@ -1,0 +1,11 @@
+diff --git a/index.js b/index.js
+index 9e0c8e2db1827a4324abb3032a5bb7b6be63dfe6..2d38bfa5727bcb22ab8a3b0618421c0f201faa87 100644
+--- a/index.js
++++ b/index.js
+@@ -1,5 +1,5 @@
+ const visit = require("unist-util-visit");
+-const twemoji = require("twemoji");
++const twemoji = require("twemoji/dist/twemoji.npm.js");
+ 
+ // https://reactnativecafe.com/emojis-in-javascript/#Conclusion
+ const EmojiRegExp = new RegExp(

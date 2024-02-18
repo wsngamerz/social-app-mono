@@ -22,5 +22,10 @@
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "remark-twemoji@0.1.1": "patches/remark-twemoji@0.1.1.patch"
+    }
   }
 }
