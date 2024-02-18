@@ -10,7 +10,7 @@ export function ProfileForm() {
             <form className="space-y-8 max-w-md">
                 <div className="space-y-2">
                     <Label>Username</Label>
-                    <Input placeholder="shadcn" disabled/>
+                    <Input placeholder="username" disabled/>
                     <p className="text-sm text-muted-foreground">
                         This is your username, this is what is to be used if you are tagged in anything. If you wish to
                         change it, please contact support.
