@@ -15,6 +15,13 @@
       "when": 1708213065370,
       "tag": "0001_silly_jubilee",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708271451924,
+      "tag": "0002_jittery_sleepwalker",
+      "breakpoints": true
     }
   ]
 }

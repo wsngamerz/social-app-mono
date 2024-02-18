@@ -9,6 +9,7 @@ import {eq} from "drizzle-orm";
 import {createServerActionClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 import {Database} from "@/types/supabase";
+import {computeEmailHash} from "@/lib/profile";
 
 export async function updateUsername(
     prevState: State | null,
@@ -20,8 +21,10 @@ export async function updateUsername(
         });
 
         const supabase = createServerActionClient<Database>({cookies});
-        const userId = (await supabase.auth.getSession()).data.session?.user.id;
-        if (!userId) {
+        const userSession = (await supabase.auth.getSession()).data.session;
+        const userId = userSession?.user.id;
+        const userEmail = userSession?.user.email;
+        if (!userId || !userEmail) {
             return {
                 status: "error",
                 message: "Error getting current user",
@@ -39,12 +42,15 @@ export async function updateUsername(
             };
         }
 
+        const emailHash = computeEmailHash(userEmail);
+        const avatarUrl = `https://gravatar.com/avatar/${emailHash}`;
+
         // upsert the username
         await db.insert(profiles)
-            .values({id: userId, username})
+            .values({id: userId, username, profileImage: avatarUrl})
             .onConflictDoUpdate({
                 target: profiles.id,
-                set: {username},
+                set: {username, profileImage: avatarUrl},
             })
 
         return {

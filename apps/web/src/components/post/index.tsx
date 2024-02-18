@@ -37,7 +37,7 @@ export default function Post({post}: PostProps) {
                         <div className="flex gap-2">
                             <Avatar>
                                 <AvatarImage
-                                    src={""} // post.user.avatar
+                                    src={post.user.profileImage || ""}
                                     alt="User avatar"
                                 />
                                 <AvatarFallback>
@@ -66,7 +66,7 @@ export default function Post({post}: PostProps) {
                     <HoverCardContent className="w-80">
                         <div className="flex justify-between space-x-4">
                             <Avatar>
-                                <AvatarImage src={""} />
+                                <AvatarImage src={post.user.profileImage || ""} />
                                 <AvatarFallback>
                                     {post.user.displayName?.split(" ")
                                         .map((name) => name[0])

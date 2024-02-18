@@ -12,12 +12,12 @@ export default function CurrentUserAvatar() {
         <Skeleton className="w-10 h-10 rounded-full shrink-0" />
     ) : (
         <Avatar>
-            <AvatarImage src="/avatar.jpg" alt="Your avatar"/>
+            <AvatarImage src={profile.profileImage || ""} alt="Your avatar"/>
             <AvatarFallback>
-                {(profile?.displayName || "")
-                    .split(" ")
+                {profile.displayName?.split(" ")
                     .map((name) => name[0])
-                    .join("") || "??"}
+                    .join("")
+                    .toUpperCase()}
             </AvatarFallback>
         </Avatar>
     );

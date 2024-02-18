@@ -10,9 +10,7 @@ import {db} from "@repo/drizzle"
 import {profiles} from "@repo/drizzle/schema";
 import {eq} from "drizzle-orm";
 
-export default async function ApplicationLayout({
-                                                    children,
-                                                }: Readonly<{ children: React.ReactNode }>) {
+export default async function ApplicationLayout({children}: Readonly<{ children: React.ReactNode }>) {
     const supabase = createServerComponentClient<Database>({cookies});
     const {
         data: {session},
