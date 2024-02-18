@@ -42,7 +42,7 @@ export async function updateUsername(
             };
         }
 
-        const emailHash = computeEmailHash(userEmail);
+        const emailHash = await computeEmailHash(userEmail);
         const avatarUrl = `https://gravatar.com/avatar/${emailHash}`;
 
         // upsert the username

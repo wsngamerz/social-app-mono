@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import type {Profile} from "@repo/drizzle/schema";
-import {createHash} from "node:crypto";
 
 
 export function useProfile() {
@@ -19,8 +18,12 @@ export function useProfile() {
  * @see https://docs.gravatar.com/general/hash/
  * @param email
  */
-export function computeEmailHash(email: string) {
-    return createHash('md5')
-        .update(email.trim().toLowerCase())
-        .digest('hex');
+export async function computeEmailHash(email: string) {
+    // return createHash('md5')
+    //     .update(email.trim().toLowerCase())
+    //     .digest('hex');
+    const encoder = new TextEncoder();
+    const data = encoder.encode(email.trim().toLowerCase());
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 }

@@ -22,10 +22,10 @@ import {
     DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
 import Markdown from "@/components/shared/markdown";
-import {Post, Profile} from "@repo/drizzle/schema";
+import {Post as PostType, Profile} from "@repo/drizzle/schema";
 
 type PostProps = {
-    post: Post & { user: Profile }
+    post: PostType & { user: Profile }
 };
 
 export default function Post({post}: PostProps) {
