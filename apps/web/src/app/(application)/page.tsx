@@ -23,7 +23,7 @@ export default async function HomePage() {
             <div className="flex flex-col gap-4">
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
-                        <Post key={post.id} post={post} />
+                        <Post key={post.id} post={post} displayActions/>
                     ))
                 ) : (
                     <NoPosts/>

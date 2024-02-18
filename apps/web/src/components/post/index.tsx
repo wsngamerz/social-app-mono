@@ -26,12 +26,12 @@ import {Post as PostType, Profile} from "@repo/drizzle/schema";
 import ClickWrapper from "@/components/post/click-wrapper";
 
 type PostProps = {
-    post: PostType & { user: Profile }
+    post: PostType & { user: Profile },
+    displayActions?: boolean
 };
 
-export function Post({post}: PostProps) {
+export function Post({post, displayActions = false}: PostProps) {
     return (
-
         <Card>
             <CardHeader className="flex flex-row gap-2 space-y-0 items-center">
                 <HoverCard>
@@ -152,31 +152,33 @@ export function Post({post}: PostProps) {
                 <Markdown content={post.text}/>
             </CardContent>
 
-            <CardFooter className="gap-2 flex-wrap">
-                <PostInteraction>
-                    <FaHeart/>
-                    <span>Like</span>
-                </PostInteraction>
-                <PostInteraction>
-                    <FaComment/>
-                    <span>Comment</span>
-                </PostInteraction>
-                <PostInteraction>
-                    <FaBookmark/>
-                    <span>Bookmark</span>
-                </PostInteraction>
-                <PostInteraction>
-                    <FaShare/>
-                    <span>Share</span>
-                </PostInteraction>
-            </CardFooter>
+            {displayActions && (
+                <CardFooter className="gap-2 flex-wrap">
+                    <PostInteraction disabled>
+                        <FaHeart/>
+                        <span>Like</span>
+                    </PostInteraction>
+                    <PostInteraction>
+                        <FaComment/>
+                        <span>Comment</span>
+                    </PostInteraction>
+                    <PostInteraction disabled>
+                        <FaBookmark/>
+                        <span>Bookmark</span>
+                    </PostInteraction>
+                    <PostInteraction disabled>
+                        <FaShare/>
+                        <span>Share</span>
+                    </PostInteraction>
+                </CardFooter>
+            )}
         </Card>
     );
 }
 
-function PostInteraction({children}: { children: React.ReactNode }) {
+function PostInteraction({children, disabled = false}: { children: React.ReactNode, disabled?: boolean }) {
     return (
-        <Button variant="outline" className="grow gap-2 text-xs p-2 h-auto">
+        <Button variant="outline" className="grow gap-2 text-xs p-2 h-auto" disabled={disabled}>
             {children}
         </Button>
     );

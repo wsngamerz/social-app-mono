@@ -22,6 +22,13 @@
       "when": 1708271451924,
       "tag": "0002_jittery_sleepwalker",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1708290539176,
+      "tag": "0003_naive_captain_marvel",
+      "breakpoints": true
     }
   ]
 }
