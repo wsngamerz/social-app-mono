@@ -4,7 +4,7 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 import {Button} from "@repo/ui/components/ui/button";
 import {FaBookmark, FaComment, FaHeart, FaShare} from "react-icons/fa";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@repo/ui/components/ui/hover-card";
-import {CalendarDays} from "lucide-react";
+import {Bookmark, CalendarDays, Flag, Heart, Pencil, Share, ShieldX, User} from "lucide-react";
 import Link from "next/link";
 import {timeAgo} from "@/lib/utils";
 import React from "react";
@@ -12,18 +12,15 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
 import Markdown from "@/components/shared/markdown";
 import {Post as PostType, Profile} from "@repo/drizzle/schema";
 import ClickWrapper from "@/components/post/click-wrapper";
+import {getUserId} from "@/lib/user";
+import DropdownMenuItemLink from "@/components/shared/dropdown-menu-item-link";
+import DeleteMenuItem from "@/components/post/delete/delete-menu-item";
 
 type PostProps = {
     post: PostType & { user: Profile } & Record<string, unknown>,
@@ -36,7 +33,9 @@ type PostProps = {
     }
 };
 
-export function Post({post, displayActions = false, statistics}: PostProps) {
+export async function Post({post, displayActions = false, statistics}: PostProps) {
+    const currentUserId = await getUserId();
+
     return (
         <Card>
             <CardHeader className="flex flex-row gap-2 space-y-0 items-center">
@@ -122,33 +121,50 @@ export function Post({post, displayActions = false, statistics}: PostProps) {
                                 <span className="sr-only">Open menu</span>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Like</DropdownMenuItem>
-                            <DropdownMenuItem>Bookmark</DropdownMenuItem>
-                            <DropdownMenuSeparator/>
-                            <DropdownMenuSub>
-                                <DropdownMenuSubTrigger>
-                                    Add to List
-                                </DropdownMenuSubTrigger>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuRadioGroup value={"1"}>
-                                        {["1", "2", "3"].map((label) => (
-                                            <DropdownMenuRadioItem
-                                                key={label}
-                                                value={label}
-                                            >
-                                                {label}
-                                            </DropdownMenuRadioItem>
-                                        ))}
-                                    </DropdownMenuRadioGroup>
-                                </DropdownMenuSubContent>
-                            </DropdownMenuSub>
-                            <DropdownMenuSeparator/>
+                        <DropdownMenuContent align="end">
+                            {currentUserId !== post.user.id && (
+                                <>
+                                    <DropdownMenuItem>
+                                        <User className="mr-2 h-4 w-4"/>
+                                        <span>Follow @{post.user.username}</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator/>
+                                </>
+                            )}
                             <DropdownMenuItem>
-                                Delete
-                                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                                <Heart className="mr-2 h-4 w-4"/>
+                                <span>Like</span>
                             </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Bookmark className="mr-2 h-4 w-4"/>
+                                <span>Bookmark</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Share className="mr-2 h-4 w-4"/>
+                                <span>Share</span>
+                            </DropdownMenuItem>
+                            {currentUserId === post.user.id ? (
+                                <>
+                                    <DropdownMenuSeparator/>
+                                    <DropdownMenuItemLink href={`/post/${post.id}/edit`}>
+                                        <Pencil className="mr-2 h-4 w-4"/>
+                                        <span>Edit</span>
+                                    </DropdownMenuItemLink>
+                                    <DeleteMenuItem id={post.id}/>
+                                </>
+                            ) : (
+                                <>
+                                    <DropdownMenuSeparator/>
+                                    <DropdownMenuItem>
+                                        <Flag className="mr-2 h-4 w-4"/>
+                                        <span>Report</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <ShieldX className="mr-2 h-4 w-4"/>
+                                        <span>Block</span>
+                                    </DropdownMenuItem>
+                                </>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

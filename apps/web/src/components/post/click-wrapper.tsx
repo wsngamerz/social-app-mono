@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import React from "react";
 
 export default function ClickWrapper({id, children}: { id: string, children: React.ReactNode }) {
     const router = useRouter();
-    const clickHandler = () => {
+    const clickHandler = (e: React.MouseEvent) => {
+        e.preventDefault();
         router.push(`/post/${id}`);
     }
 

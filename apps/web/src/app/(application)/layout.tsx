@@ -41,6 +41,7 @@ export default async function ApplicationLayout({children}: Readonly<{ children:
             {/* Main content */}
             <main className="p-4 w-full h-full min-h-screen flex flex-col gap-4">
                 {children}
+                <div className="w-full h-20 shrink-0"></div>
             </main>
 
             {/* Bottom Tab Bar (Mobile) */}

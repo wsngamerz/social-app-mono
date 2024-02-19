@@ -1,26 +1,27 @@
 "use server";
 
 import * as z from "zod";
-import { composePostSchema } from "@/components/post/compose/compose.schema";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/types/supabase";
-import { cookies } from "next/headers";
-import { randomUUID } from "node:crypto";
-import { revalidatePath } from "next/cache";
-import { db } from "@repo/drizzle";
-import {posts} from "@repo/drizzle/schema";
+import {createServerActionClient} from "@supabase/auth-helpers-nextjs";
+import {Database} from "@/types/supabase";
+import {cookies} from "next/headers";
+import {revalidatePath} from "next/cache";
 import {State} from "@/types/actions";
+import {editPostSchema} from "@/components/post/edit/edit.schema";
+import {posts} from "@repo/drizzle/schema";
+import {db} from "@repo/drizzle";
+import {eq} from "drizzle-orm";
 
-export async function composePost(
+export async function editPost(
     prevState: State | null,
     data: FormData,
 ): Promise<State> {
     try {
-        const { content } = composePostSchema.parse({
+        const {content, id} = editPostSchema.parse({
             content: data.get("content"),
+            id: data.get("id"),
         });
 
-        const supabase = createServerActionClient<Database>({ cookies });
+        const supabase = createServerActionClient<Database>({cookies});
         const userId = (await supabase.auth.getSession()).data.session?.user.id;
         if (!userId) {
             return {
@@ -29,18 +30,20 @@ export async function composePost(
             };
         }
 
-        await db.insert(posts).values({
-            id: randomUUID(),
+        // update post
+        await db.update(posts).set({
             text: content,
-            userId: userId,
-            createdAt: new Date(),
             updatedAt: new Date(),
-        });
+        }).where(eq(posts.id, id));
 
         revalidatePath("/");
+        revalidatePath(`/post/${id}`);
+        revalidatePath(`/user/${userId}`);
+        revalidatePath(`/profile`);
+
         return {
             status: "success",
-            message: "Post created successfully",
+            message: "Post updated successfully",
         };
     } catch (error) {
         if (error instanceof z.ZodError) {
