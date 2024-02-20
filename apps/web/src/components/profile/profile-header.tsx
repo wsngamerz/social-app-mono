@@ -1,12 +1,19 @@
 import {Profile} from "@repo/drizzle/schema";
 import Image from "next/image";
 import {Card, CardContent} from "@ui/components/ui/card";
+import {getUserId} from "@/lib/user";
+import {Button, buttonVariants} from "@ui/components/ui/button";
+import {BsThreeDotsVertical} from "react-icons/bs";
+import Link from "next/link";
 
 type ProfileHeaderProps = {
     profile: Profile
 }
 
-export default function ProfileHeader({profile}: ProfileHeaderProps) {
+export default async function ProfileHeader({profile}: ProfileHeaderProps) {
+    const currentUser = await getUserId();
+    const isCurrentUser = currentUser === profile.id;
+
     return (
         <Card
             className="pt-32 md:pt-24 lg:pt-32 bg-emerald-500 rounded-lg"
@@ -33,8 +40,25 @@ export default function ProfileHeader({profile}: ProfileHeaderProps) {
                                     @{profile.username}
                                 </span>
                             </div>
-                            <div className="text-xs font-light text-gray-800 dark:text-gray-400 break-all text-center md:text-left">{profile.id}</div>
+                            <div
+                                className="text-xs font-light text-gray-800 dark:text-gray-400 break-all text-center md:text-left">
+                                {profile.id}
+                            </div>
                         </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                        {isCurrentUser && (
+                            <Link href="/settings" className={buttonVariants({
+                                variant: "secondary",
+                            })}>
+                                Edit Profile
+                            </Link>
+                        )}
+
+                        <Button className="px-2" variant="secondary">
+                            <BsThreeDotsVertical/>
+                        </Button>
                     </div>
                 </div>
             </CardContent>
