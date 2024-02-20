@@ -1,7 +1,20 @@
 import {Separator} from "@ui/components/ui/separator";
-import { ProfileForm } from "./profile-form";
+import ProfileForm from "./profile-form";
+import {getUserId} from "@/lib/user";
+import {db} from "@repo/drizzle"
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+    const userId = await getUserId();
+    if (!userId) {
+        return <p>Not logged in</p>
+    }
+    const profile = await db.query.profiles.findFirst({
+        where: (profiles, {eq}) => eq(profiles.id, userId)
+    });
+    if (!profile) {
+        return <p>Profile not found</p>
+    }
+
     return (
         <div className="space-y-6">
             <div>
@@ -10,8 +23,11 @@ export default function SettingsProfilePage() {
                     This is how others will see you on the site.
                 </p>
             </div>
-            <Separator />
-            <ProfileForm />
+            <Separator/>
+            <ProfileForm username={profile.username}
+                         displayName={profile.displayName}
+                         bio={profile.bio}
+                         profileImage={profile.profileImage}/>
         </div>
     )
 }

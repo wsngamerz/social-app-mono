@@ -96,7 +96,9 @@ export async function Post({post, displayActions = false, statistics}: PostProps
                                         @{post.user.username}
                                     </Link>
                                 </div>
-                                <p className="text-sm">{"(BIO NOT YET IMPLEMENTED)"}</p>
+                                <p className="text-sm">
+                                    <Markdown content={post.user.bio || ""} />
+                                </p>
                                 <div className="flex items-center pt-2">
                                     <CalendarDays className="mr-2 h-4 w-4 opacity-70"/>{" "}
                                     <span className="text-xs text-muted-foreground">

@@ -8,6 +8,7 @@ export const profiles = pgTable('profiles', {
     displayName: text('display_name'),
     username: varchar('username').unique(),
     profileImage: text('profile_image'),
+    bio: text('bio'),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
