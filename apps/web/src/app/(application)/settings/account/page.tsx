@@ -1,7 +1,20 @@
 import {Separator} from "@ui/components/ui/separator";
-import {AccountForm} from "./account-form";
+import AccountForm from "./account-form";
+import {getUserId} from "@/lib/user";
+import {db} from "@repo/drizzle";
 
-export default function SettingsAccountPage() {
+export default async function SettingsAccountPage() {
+    const userId = await getUserId();
+    if (!userId) {
+        return <p>Not logged in</p>
+    }
+    const profile = await db.query.profiles.findFirst({
+        where: (profiles, {eq}) => eq(profiles.id, userId)
+    });
+    if (!profile) {
+        return <p>Profile not found</p>
+    }
+
     return (
         <div className="space-y-6">
             <div>
@@ -11,7 +24,7 @@ export default function SettingsAccountPage() {
                 </p>
             </div>
             <Separator/>
-            <AccountForm/>
+            <AccountForm firstName={profile.firstName} lastName={profile.lastName}/>
         </div>
     )
 }

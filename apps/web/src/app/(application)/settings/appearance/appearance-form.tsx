@@ -1,12 +1,11 @@
 "use client";
 
-import {Button} from "@ui/components/ui/button";
 import {Label} from "@ui/components/ui/label";
 import {RadioGroup, RadioGroupItem} from "@ui/components/ui/radio-group";
 import {useTheme} from "next-themes";
 
 export function AppearanceForm() {
-    const { setTheme, theme } = useTheme();
+    const {setTheme, theme} = useTheme();
 
     const radioGroupValueChange = (value: string) => {
         setTheme(value);
@@ -65,7 +64,7 @@ export function AppearanceForm() {
                     </RadioGroup>
                 </div>
 
-                <Button type="submit">Update preferences</Button>
+                {/*<Button type="submit">Update preferences</Button>*/}
             </form>
         </>
     )

@@ -9,7 +9,6 @@ import {FormEvent} from "react";
 import {FormSubmit} from "@/components/shared/form-submit";
 import {toast} from "sonner";
 import {State} from "@/types/actions";
-import {useRouter} from "next/navigation";
 import {Textarea} from "@ui/components/ui/textarea";
 import {updateProfile} from "@/app/(application)/settings/profile.action";
 import {ProfileFormSchema, profileSchema} from "@/app/(application)/settings/profile.schema";
@@ -22,7 +21,6 @@ type ProfileFormProps = {
 }
 
 export default function ProfileForm({username, displayName, bio, profileImage}: ProfileFormProps) {
-    const router = useRouter();
     const [state, formAction] = useFormState<State, FormData>(updateProfile, null);
     const form = useForm<ProfileFormSchema>({
         resolver: zodResolver(profileSchema),
@@ -59,7 +57,6 @@ export default function ProfileForm({username, displayName, bio, profileImage}: 
                 }
             } else if (result?.status === "success") {
                 toast.success(result.message);
-                router.push("/")
             }
         })(event);
     };
@@ -79,7 +76,8 @@ export default function ProfileForm({username, displayName, bio, profileImage}: 
                             <FormItem>
                                 <FormLabel>Username</FormLabel>
                                 <FormControl>
-                                    <Input className="opacity-50 cursor-not-allowed" placeholder="username" {...field} readOnly/>
+                                    <Input className="opacity-50 cursor-not-allowed" placeholder="username" {...field}
+                                           readOnly/>
                                 </FormControl>
                                 <FormMessage/>
                                 <FormDescription className="text-sm text-muted-foreground">
@@ -134,7 +132,8 @@ export default function ProfileForm({username, displayName, bio, profileImage}: 
                             <FormItem>
                                 <FormLabel>Profile Image</FormLabel>
                                 <FormControl>
-                                    <Input className="opacity-50 cursor-not-allowed" placeholder="profile image" {...field} readOnly/>
+                                    <Input className="opacity-50 cursor-not-allowed"
+                                           placeholder="profile image" {...field} readOnly/>
                                 </FormControl>
                                 <FormMessage/>
                                 <FormDescription className="text-sm text-muted-foreground">

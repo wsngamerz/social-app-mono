@@ -2,23 +2,21 @@
 
 import * as z from "zod";
 import {State} from "@/types/actions";
-import {profileSchema} from "@/app/(application)/settings/profile.schema";
 import {getUserId} from "@/lib/user";
 import {db} from "@repo/drizzle"
 import {profiles} from "@repo/drizzle/schema";
 import {eq} from "drizzle-orm";
+import {accountSchema} from "@/app/(application)/settings/account/account.schema";
 import {revalidatePath} from "next/cache";
 
-export async function updateProfile(
+export async function updateAccount(
     prevState: State | null,
     data: FormData,
 ): Promise<State> {
     try {
-        const {username, displayName, bio, profileImage} = profileSchema.parse({
-            username: data.get("username"),
-            displayName: data.get("displayName"),
-            bio: data.get("bio"),
-            profileImage: data.get("profileImage"),
+        const {firstName, lastName} = accountSchema.parse({
+            firstName: data.get("firstName"),
+            lastName: data.get("lastName"),
         });
 
         const userId = await getUserId();
@@ -30,14 +28,11 @@ export async function updateProfile(
         }
 
         await db.update(profiles).set({
-            username: username,
-            displayName: displayName,
-            bio: bio,
-            profileImage: profileImage,
+            firstName,
+            lastName,
         }).where(eq(profiles.id, userId));
 
-        revalidatePath("/settings");
-        revalidatePath("/profile");
+        revalidatePath("/settings/account");
 
         return {
             status: "success",

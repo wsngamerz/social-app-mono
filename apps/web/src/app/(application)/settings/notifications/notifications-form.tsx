@@ -36,7 +36,7 @@ export function NotificationsForm() {
                     </RadioGroup>
                 </div>
 
-                <Button type="submit">Update notifications</Button>
+                <Button type="submit" disabled>Update notifications</Button>
             </form>
         </>
     )
