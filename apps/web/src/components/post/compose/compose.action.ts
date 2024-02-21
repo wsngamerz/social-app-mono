@@ -5,7 +5,6 @@ import { composePostSchema } from "@/components/post/compose/compose.schema";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 import { cookies } from "next/headers";
-import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { db } from "@repo/drizzle";
 import {posts} from "@repo/drizzle/schema";
@@ -30,7 +29,7 @@ export async function composePost(
         }
 
         await db.insert(posts).values({
-            id: randomUUID(),
+            id: crypto.randomUUID(),
             text: content,
             userId: userId,
             createdAt: new Date(),
