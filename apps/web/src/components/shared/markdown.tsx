@@ -6,10 +6,17 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, {defaultSchema, Options} from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
+import {cn} from "@ui/lib/utils";
 
-export default function Markdown({ content }: MarkdownProps) {
+type MarkdownProps = {
+    content: string;
+    className?: string;
+};
+
+export default function Markdown({content, className}: MarkdownProps) {
     return (
-        <div className="w-full max-w-full prose prose-slate prose-sm dark:prose-invert prose-img:rounded prose-headings:my-0.5 prose-p:my-0.5 prose-img:my-0.5 prose-p:leading-6">
+        <div
+            className={cn("w-full max-w-full prose prose-slate prose-sm dark:prose-invert prose-img:rounded prose-headings:my-0.5 prose-p:my-0.5 prose-img:my-0.5 prose-p:leading-6", className)}>
             <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkEmoji, [remarkTwemoji, {
                     isReact: true,
@@ -21,7 +28,7 @@ export default function Markdown({ content }: MarkdownProps) {
                         ...defaultSchema,
                         attributes: {
                             ...defaultSchema.attributes,
-                            "img" : ["src", "longdesc", "loading", "alt", "className"],
+                            "img": ["src", "longdesc", "loading", "alt", "className"],
                         }
                     } as Options],
                     rehypeHighlight
@@ -32,7 +39,3 @@ export default function Markdown({ content }: MarkdownProps) {
         </div>
     );
 }
-
-type MarkdownProps = {
-    content: string;
-};

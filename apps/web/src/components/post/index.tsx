@@ -1,11 +1,8 @@
 import {Card, CardContent, CardFooter, CardHeader,} from "@repo/ui/components/ui/card";
-import {Avatar, AvatarFallback, AvatarImage} from "@repo/ui/components/ui/avatar";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {Button} from "@repo/ui/components/ui/button";
 import {FaBookmark, FaComment, FaHeart, FaShare} from "react-icons/fa";
-import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@repo/ui/components/ui/hover-card";
-import {Bookmark, CalendarDays, Flag, Heart, Pencil, Share, ShieldX, User} from "lucide-react";
-import Link from "next/link";
+import {Bookmark, Flag, Heart, Pencil, Share, ShieldX, User} from "lucide-react";
 import {timeAgo} from "@/lib/utils";
 import React from "react";
 import {
@@ -21,6 +18,7 @@ import ClickWrapper from "@/components/post/click-wrapper";
 import {getUserId} from "@/lib/user";
 import DropdownMenuItemLink from "@/components/shared/dropdown-menu-item-link";
 import DeleteMenuItem from "@/components/post/delete/delete-menu-item";
+import ProfileCard from "@/components/shared/profile-card";
 
 type PostProps = {
     post: PostType & { user: Profile } & Record<string, unknown>,
@@ -39,76 +37,7 @@ export async function Post({post, displayActions = false, statistics}: PostProps
     return (
         <Card>
             <CardHeader className="flex flex-row gap-2 space-y-0 items-center">
-                <HoverCard>
-                    <HoverCardTrigger asChild>
-                        <div className="flex gap-2">
-                            <Avatar>
-                                <AvatarImage
-                                    src={post.user.profileImage || ""}
-                                    alt="User avatar"
-                                />
-                                <AvatarFallback>
-                                    {post.user.displayName?.split(" ")
-                                        .map((name) => name[0])
-                                        .join("")
-                                        .toUpperCase()}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="text-left flex-grow flex flex-col">
-                                <Link
-                                    href={`/user/@${post.user.username}`}
-                                    className="text-sm hover:underline"
-                                >
-                                    {post.user.displayName}
-                                </Link>
-                                <Link
-                                    href={`/user/@${post.user.username}`}
-                                    className="text-xs hover:underline"
-                                >
-                                    @{post.user.username}
-                                </Link>
-                            </div>
-                        </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80">
-                        <div className="flex justify-between space-x-4">
-                            <Avatar>
-                                <AvatarImage src={post.user.profileImage || ""}/>
-                                <AvatarFallback>
-                                    {post.user.displayName?.split(" ")
-                                        .map((name) => name[0])
-                                        .join("")
-                                        .toUpperCase()}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="space-y-1 flex-grow">
-                                <div className="flex flex-col">
-                                    <Link
-                                        href={`/user/@${post.user.username}`}
-                                        className="text-sm font-semibold hover:underline"
-                                    >
-                                        {post.user.displayName}
-                                    </Link>
-                                    <Link
-                                        href={`/user/@${post.user.username}`}
-                                        className="text-xs hover:underline"
-                                    >
-                                        @{post.user.username}
-                                    </Link>
-                                </div>
-                                <p className="text-sm">
-                                    <Markdown content={post.user.bio || ""} />
-                                </p>
-                                <div className="flex items-center pt-2">
-                                    <CalendarDays className="mr-2 h-4 w-4 opacity-70"/>{" "}
-                                    <span className="text-xs text-muted-foreground">
-                                        Joined {post.user.createdAt.toLocaleDateString()}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </HoverCardContent>
-                </HoverCard>
+                <ProfileCard user={post.user}/>
 
                 <div className="flex-grow flex justify-end gap-4">
                     <div className="text-xs">{timeAgo(post.createdAt)}</div>
