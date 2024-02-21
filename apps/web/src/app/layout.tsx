@@ -16,6 +16,8 @@ const fontSans = FontSans({
     variable: "--font-sans",
 });
 
+export const runtime = "edge";
+
 export const metadata: Metadata = {
     title: "SocialApp",
     description: "The newest and bestest social media app",
