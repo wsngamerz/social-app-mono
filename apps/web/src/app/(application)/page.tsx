@@ -1,22 +1,8 @@
-import Post from "@/components/post";
 import ComposeCard from "@/components/post/compose/compose-card";
-import {db} from "@repo/drizzle";
-import NoPosts from "@/components/post/no-posts";
-import {count, desc, eq, getTableColumns} from "drizzle-orm";
-import {posts, profiles, replies} from "@repo/drizzle/schema";
+import HomepagePosts from "@/app/(application)/homepage-posts";
+import {Suspense} from "react";
 
 export default async function HomePage() {
-    const allPosts = await db.select({
-        ...getTableColumns(posts),
-        user: getTableColumns(profiles),
-        commentCount: count(replies.id)
-    })
-        .from(posts)
-        .leftJoin(replies, eq(posts.id, replies.postId))
-        .leftJoin(profiles, eq(posts.userId, profiles.id))
-        .groupBy(posts.id, profiles.id)
-        .orderBy(desc(posts.createdAt));
-
     return (
         <>
             <h1 className="text-2xl font-bold">Home</h1>
@@ -26,26 +12,9 @@ export default async function HomePage() {
             </div>
 
             <div className="flex flex-col gap-4">
-                {allPosts && allPosts.length > 0 ? (
-                    allPosts.map((post) => {
-                        const {user, commentCount, ...rest} = post;
-                        if (!user) return null;
-                        const postWithUser = {
-                            ...rest,
-                            user
-                        };
-                        return(
-                            <Post key={post.id} post={postWithUser} statistics={{
-                                likes: 0,
-                                comments: commentCount,
-                                bookmarks: 0,
-                                shares: 0
-                            }} displayActions/>
-                        )
-                    })
-                ) : (
-                    <NoPosts/>
-                )}
+                <Suspense fallback={<div>Loading...</div>}>
+                    <HomepagePosts/>
+                </Suspense>
             </div>
         </>
     );

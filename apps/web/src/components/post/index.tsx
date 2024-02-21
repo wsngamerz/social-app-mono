@@ -4,7 +4,7 @@ import {Button} from "@repo/ui/components/ui/button";
 import {FaBookmark, FaComment, FaHeart, FaShare} from "react-icons/fa";
 import {Bookmark, Flag, Heart, Pencil, Share, ShieldX, User} from "lucide-react";
 import {timeAgo} from "@/lib/utils";
-import React from "react";
+import React, {Suspense} from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -102,7 +102,9 @@ export async function Post({post, displayActions = false, statistics}: PostProps
             </CardHeader>
 
             <CardContent>
-                <Markdown content={post.text}/>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Markdown content={post.text}/>
+                </Suspense>
             </CardContent>
 
             {displayActions && (
