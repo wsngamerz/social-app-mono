@@ -2,7 +2,7 @@ import NoPosts from "@/components/post/no-posts";
 import {db} from "@repo/drizzle";
 import {count, desc, eq, getTableColumns} from "drizzle-orm";
 import {posts, profiles, replies} from "@repo/drizzle/schema";
-import {Post} from "@/components/post";
+import Post from "@/components/post";
 
 export default async function HomepagePosts() {
     const allPosts = await db.select({
