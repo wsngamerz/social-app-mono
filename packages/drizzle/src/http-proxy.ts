@@ -5,6 +5,7 @@ export const httpDriver: RemoteCallback = async (sql, params, method) => {
         const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
         const url = `http${!baseUrl?.startsWith("localhost") ? "s" : ""}://${baseUrl}/api/data`
         const body = JSON.stringify({sql, params, method});
+        console.log(`[DB proxy] Request:`, {url, body});
 
         // console.log(`[DB proxy] ${url} - ${body}`)
         const data = await fetch(url, {
