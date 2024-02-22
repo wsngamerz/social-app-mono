@@ -22,8 +22,13 @@ import {
 import { FormSubmit } from "@/components/shared/form-submit";
 import { composePost } from "@/components/post/compose/compose.action";
 import { State } from "@/types/actions";
+import GifPicker from "@/components/shared/gif-picker";
 
-export default function ComposeForm() {
+type ComposeFormProps = {
+    tenorApiKey: string;
+};
+
+export default function ComposeForm(props: ComposeFormProps) {
     const [state, formAction] = useFormState<State, FormData>(
         composePost,
         null,
@@ -116,6 +121,13 @@ export default function ComposeForm() {
                     >
                         <FaPhotoVideo />
                     </Button>
+                    <GifPicker tenorApiKey={props.tenorApiKey} form={form}>
+                        <Button
+                            variant="outline"
+                            type="button">
+                            GIF
+                        </Button>
+                    </GifPicker>
                     <div className="flex flex-grow justify-end">
                         <FormSubmit forcePending={form.formState.isSubmitting}>
                             Post
