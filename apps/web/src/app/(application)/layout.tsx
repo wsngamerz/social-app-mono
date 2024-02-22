@@ -23,7 +23,7 @@ export default async function ApplicationLayout({children}: Readonly<{ children:
     // get the user profile
     const userProfile = (await db.select().from(profiles).where(eq(profiles.id, session.user.id)).limit(1))[0]
     if (!userProfile || !userProfile.displayName || !userProfile.username) {
-        console.log("User profile not found or incomplete");
+        console.log("User profile not found or incomplete:", userProfile);
         redirect("/onboarding");
     }
 
