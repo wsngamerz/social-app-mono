@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     ComposePostForm,
-    composePostSchema,
+    composePostSchema, MAX_POST_LENGTH,
 } from "@/components/post/compose/compose.schema";
 import React, { FormEvent } from "react";
 import {
@@ -22,6 +22,8 @@ import {
 import { FormSubmit } from "@/components/shared/form-submit";
 import { composePost } from "@/components/post/compose/compose.action";
 import { State } from "@/types/actions";
+import GifPicker from "@/components/gif-picker";
+import CircleProgress from "@/components/shared/circle-progress";
 
 export default function ComposeForm() {
     const [state, formAction] = useFormState<State, FormData>(
@@ -34,6 +36,7 @@ export default function ComposeForm() {
             content: "",
         },
     });
+    const contentWatch = form.watch("content");
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         const formData = new FormData(
@@ -116,7 +119,15 @@ export default function ComposeForm() {
                     >
                         <FaPhotoVideo />
                     </Button>
-                    <div className="flex flex-grow justify-end">
+                    <GifPicker form={form}>
+                        <Button
+                            variant="outline"
+                            type="button">
+                            GIF
+                        </Button>
+                    </GifPicker>
+                    <div className="flex flex-grow justify-end gap-4">
+                        <CircleProgress value={contentWatch.length} size={MAX_POST_LENGTH} />
                         <FormSubmit forcePending={form.formState.isSubmitting}>
                             Post
                         </FormSubmit>
