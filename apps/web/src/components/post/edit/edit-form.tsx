@@ -37,6 +37,7 @@ export default function EditForm({id, text}: EditFormProps) {
             content: text,
         },
     });
+    const liveContent = form.watch("content");
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         const formData = new FormData(
@@ -87,7 +88,7 @@ export default function EditForm({id, text}: EditFormProps) {
             <form
                 onSubmit={onSubmit}
                 action={formAction}
-                className="w-full flex flex-col gap-2"
+                className="w-full flex flex-col gap-2 min-w-0"
             >
                 <FormField
                     control={form.control}
@@ -145,6 +146,15 @@ export default function EditForm({id, text}: EditFormProps) {
                         </FormSubmit>
                     </div>
                 </div>
+
+                <Card>
+                    <CardHeader>
+                        <h2 className="text-xl font-bold">Live Preview</h2>
+                    </CardHeader>
+                    <CardContent className="flex gap-2">
+                        <Markdown content={liveContent} />
+                    </CardContent>
+                </Card>
             </form>
         </Form>
     );
