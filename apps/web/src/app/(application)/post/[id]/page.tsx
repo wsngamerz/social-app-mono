@@ -41,7 +41,7 @@ export default async function PostPage({params, searchParams}: PostPageProps) {
     })
 
     return (
-        <div className="grid gap-4">
+        <div className="flex flex-col gap-4 min-w-0">
             <Post post={post}/>
             <ComposeReply/>
             <div className="flex justify-end">

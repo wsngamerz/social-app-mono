@@ -16,11 +16,11 @@ type UserProfileProps = {
 
 export default function UserProfile({profile, posts, children}: UserProfileProps) {
     return (
-        <div className="grid gap-4">
+        <div className="flex flex-col gap-4 min-w-0">
             <ProfileHeader profile={profile}/>
 
             <div className="grid grid-cols-1 xl:grid-cols-[auto_350px] gap-4">
-                <div className="grid gap-4 order-2 xl:order-1">
+                <div className="flex flex-col min-w-0 gap-4 order-2 xl:order-1">
                     {children && (
                         <div className="flex flex-col gap-4">
                             {children}
