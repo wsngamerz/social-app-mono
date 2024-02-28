@@ -15,6 +15,9 @@ import {editPost} from "@/components/post/edit/edit.action";
 import {EditPostForm, editPostSchema} from "@/components/post/edit/edit.schema";
 import {Input} from "@ui/components/ui/input";
 import {useRouter} from "next/navigation";
+import {Card, CardContent, CardHeader} from "@ui/components/ui/card";
+import Markdown from "@/components/shared/markdown";
+import GifPicker from "@/components/gif-picker";
 
 type EditFormProps = {
     id: string;
@@ -129,6 +132,13 @@ export default function EditForm({id, text}: EditFormProps) {
                     >
                         <FaPhotoVideo/>
                     </Button>
+                    <GifPicker form={form}>
+                        <Button
+                            variant="outline"
+                            type="button">
+                            GIF
+                        </Button>
+                    </GifPicker>
                     <div className="flex flex-grow justify-end">
                         <FormSubmit forcePending={form.formState.isSubmitting}>
                             Edit Post

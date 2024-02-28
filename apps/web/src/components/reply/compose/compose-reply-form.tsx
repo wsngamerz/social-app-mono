@@ -21,6 +21,7 @@ import {ComposeReplyForm as ComposeReply, composeReplySchema} from "./compose.sc
 import {composeReply} from "@/components/reply/compose/compose.action";
 import {usePathname} from "next/navigation";
 import {Input} from "@ui/components/ui/input";
+import GifPicker from "@/components/gif-picker";
 
 export default function ComposeReplyForm() {
     const postId = usePathname().split("/").pop();
@@ -138,6 +139,13 @@ export default function ComposeReplyForm() {
                     >
                         <FaPhotoVideo />
                     </Button>
+                    <GifPicker form={form}>
+                        <Button
+                            variant="outline"
+                            type="button">
+                            GIF
+                        </Button>
+                    </GifPicker>
                     <div className="flex flex-grow justify-end">
                         <FormSubmit forcePending={form.formState.isSubmitting}>
                             Reply
