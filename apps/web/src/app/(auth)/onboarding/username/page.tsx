@@ -2,12 +2,10 @@ import Steps from "@/app/(auth)/onboarding/steps";
 import React from "react";
 import UsernameForm from "@/app/(auth)/onboarding/username/username-form";
 import {db} from "@repo/drizzle";
-import {cookies} from "next/headers";
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {Database} from "@/types/supabase";
+import supabaseServer from "@/lib/supabaseServer";
 
 export default async function UsernameOnboardingPage() {
-    const supabase = createServerComponentClient<Database>({cookies});
+    const supabase = supabaseServer();
     const {data: {session}} = await supabase.auth.getSession();
     const userId = session?.user?.id;
     if (!userId) return null;
@@ -16,7 +14,7 @@ export default async function UsernameOnboardingPage() {
         columns: {
             username: true
         },
-        where: (profiles, { eq }) => eq(profiles.id, userId)
+        where: (profiles, {eq}) => eq(profiles.id, userId)
     });
 
     return (

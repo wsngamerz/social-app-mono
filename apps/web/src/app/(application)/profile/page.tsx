@@ -1,6 +1,3 @@
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {Database} from "@/types/supabase";
-import {cookies} from "next/headers";
 import {db} from "@repo/drizzle";
 import UserProfile from "@/components/profile";
 import ComposeCard from "@/components/post/compose/compose-card";
@@ -9,9 +6,10 @@ import {Terminal} from "lucide-react";
 import Link from "next/link";
 import {Profile} from "@repo/drizzle/schema";
 import {and} from "drizzle-orm";
+import supabaseServer from "@/lib/supabaseServer";
 
 export default async function ProfilePage() {
-    const supabase = createServerComponentClient<Database>({cookies});
+    const supabase = supabaseServer();
     const userId = (await supabase.auth.getSession()).data.session?.user?.id;
     if (!userId) {
         return <p>Not logged in</p>;

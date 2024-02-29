@@ -1,12 +1,10 @@
 import {db} from "@repo/drizzle";
 import UserProfile from "@/components/profile";
-import {cookies} from "next/headers";
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {Database} from "@/types/supabase";
 import {redirect} from "next/navigation";
+import supabaseServer from "@/lib/supabaseServer";
 
 export default async function UserPage({params}: { params: { username: string } }) {
-    const supabase = createServerComponentClient<Database>({cookies});
+    const supabase = supabaseServer();
     const currentUserId = (await supabase.auth.getSession()).data.session?.user?.id;
     if (!currentUserId) {
         return <p>Not logged in</p>;

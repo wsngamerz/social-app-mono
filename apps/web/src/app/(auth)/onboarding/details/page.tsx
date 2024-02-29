@@ -1,13 +1,11 @@
 import Steps from "@/app/(auth)/onboarding/steps";
 import React from "react";
 import {db} from "@repo/drizzle";
-import {cookies} from "next/headers";
-import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
-import {Database} from "@/types/supabase";
 import DetailsForm from "@/app/(auth)/onboarding/details/details-form";
+import supabaseServer from "@/lib/supabaseServer";
 
 export default async function DetailsOnboardingPage() {
-    const supabase = createServerComponentClient<Database>({cookies});
+    const supabase = supabaseServer();
     const {data: {session}} = await supabase.auth.getSession();
     const userId = session?.user?.id;
     if (!userId) return null;
@@ -19,7 +17,7 @@ export default async function DetailsOnboardingPage() {
             displayName: true,
             username: true,
         },
-        where: (profiles, { eq }) => eq(profiles.id, userId)
+        where: (profiles, {eq}) => eq(profiles.id, userId)
     });
 
 
@@ -35,7 +33,7 @@ export default async function DetailsOnboardingPage() {
             </div>
             <div className="grid gap-6">
                 <Steps progress={2}/>
-                <DetailsForm existing={existingUser} />
+                <DetailsForm existing={existingUser}/>
             </div>
         </>
     )
