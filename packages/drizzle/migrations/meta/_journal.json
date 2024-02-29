@@ -43,6 +43,13 @@
       "when": 1709232643789,
       "tag": "0005_boring_loki",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1709234775867,
+      "tag": "0006_flimsy_boomer",
+      "breakpoints": true
     }
   ]
 }

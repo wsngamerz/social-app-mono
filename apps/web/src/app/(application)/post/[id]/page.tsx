@@ -7,6 +7,7 @@ import Reply from "@/components/reply";
 import ReplyOrder from "@/app/(application)/post/[id]/reply-order";
 import {Card, CardContent} from "@ui/components/ui/card";
 import Tumbleweed from "@/components/shared/tumbleweed";
+import {and} from "drizzle-orm";
 
 type PostPageProps = {
     params: { id: string }
@@ -34,7 +35,7 @@ export default async function PostPage({params, searchParams}: PostPageProps) {
     if (!post) notFound();
 
     const replies = await db.query.replies.findMany({
-        where: (replies, {eq}) => eq(replies.postId, postId),
+        where: (replies, {eq}) => and(eq(replies.postId, postId), eq(replies.deleted, false)),
         orderBy: (replies, {desc, asc}) => [replyOrder == "desc" ? desc(replies.createdAt) : asc(replies.createdAt)],
         with: {
             user: true,

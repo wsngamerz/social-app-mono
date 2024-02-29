@@ -1,6 +1,6 @@
 import NoPosts from "@/components/post/no-posts";
 import {db} from "@repo/drizzle";
-import {count, desc, eq, getTableColumns} from "drizzle-orm";
+import {and, count, desc, eq, getTableColumns} from "drizzle-orm";
 import {posts, profiles, replies} from "@repo/drizzle/schema";
 import Post from "@/components/post";
 
@@ -12,7 +12,7 @@ export default async function HomepagePosts() {
     })
         .from(posts)
         .where(eq(posts.deleted, false))
-        .leftJoin(replies, eq(posts.id, replies.postId))
+        .leftJoin(replies, and(eq(posts.id, replies.postId), eq(replies.deleted, false)))
         .leftJoin(profiles, eq(posts.userId, profiles.id))
         .groupBy(posts.id, profiles.id)
         .orderBy(desc(posts.createdAt));
