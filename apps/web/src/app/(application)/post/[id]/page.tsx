@@ -14,14 +14,13 @@ type PostPageProps = {
 }
 
 export default async function PostPage({params, searchParams}: PostPageProps) {
-    // get replies order from searchParams, default to desc
+    // get replies order from searchParams, default to asc
     let replyOrder: "asc" | "desc";
-    if (searchParams.order && searchParams.order === "asc") {
-        replyOrder = "asc";
-    } else {
+    if (searchParams.order && searchParams.order === "desc") {
         replyOrder = "desc";
+    } else {
+        replyOrder = "asc";
     }
-
 
     const postId = params.id;
     if (!postId) notFound();
@@ -52,13 +51,13 @@ export default async function PostPage({params, searchParams}: PostPageProps) {
             ) : (
                 <Card>
                     <CardContent className="p-6 flex flex-col items-center gap-4 text-sm text-muted-foreground">
-                        <Tumbleweed />
+                        <Tumbleweed/>
                         <p>This post has been deleted</p>
                     </CardContent>
                 </Card>
             )}
             <div className="flex justify-end">
-                <ReplyOrder />
+                <ReplyOrder/>
             </div>
             {replies && replies.length > 0 ? (
                 replies.map((reply) => (
