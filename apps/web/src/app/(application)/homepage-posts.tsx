@@ -11,6 +11,7 @@ export default async function HomepagePosts() {
         commentCount: count(replies.id)
     })
         .from(posts)
+        .where(eq(posts.deleted, false))
         .leftJoin(replies, eq(posts.id, replies.postId))
         .leftJoin(profiles, eq(posts.userId, profiles.id))
         .groupBy(posts.id, profiles.id)

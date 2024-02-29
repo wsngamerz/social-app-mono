@@ -5,6 +5,8 @@ import ComposeReply from "@/components/reply/compose";
 import NoReplies from "@/components/reply/no-replies";
 import Reply from "@/components/reply";
 import ReplyOrder from "@/app/(application)/post/[id]/reply-order";
+import {Card, CardContent} from "@ui/components/ui/card";
+import Tumbleweed from "@/components/shared/tumbleweed";
 
 type PostPageProps = {
     params: { id: string }
@@ -42,8 +44,19 @@ export default async function PostPage({params, searchParams}: PostPageProps) {
 
     return (
         <div className="flex flex-col gap-4 min-w-0">
-            <Post post={post}/>
-            <ComposeReply/>
+            {!post.deleted ? (
+                <>
+                    <Post post={post}/>
+                    <ComposeReply/>
+                </>
+            ) : (
+                <Card>
+                    <CardContent className="p-6 flex flex-col items-center gap-4 text-sm text-muted-foreground">
+                        <Tumbleweed />
+                        <p>This post has been deleted</p>
+                    </CardContent>
+                </Card>
+            )}
             <div className="flex justify-end">
                 <ReplyOrder />
             </div>

@@ -2,7 +2,7 @@
 
 import {db} from "@repo/drizzle"
 import {posts} from "@repo/drizzle/schema";
-import {and, eq} from "drizzle-orm";
+import {eq} from "drizzle-orm";
 import {createServerActionClient} from "@supabase/auth-helpers-nextjs";
 import {Database} from "@/types/supabase";
 import {cookies} from "next/headers";
@@ -13,15 +13,23 @@ export async function deletePost(id: string) {
     const userSession = await supabase.auth.getSession();
     const userId = userSession?.data.session?.user.id;
 
-    if (!userId) {
+    if (!userId)
         throw new Error("User not found")
-    }
 
-    // should be able to delete only if the post belongs to the user
-    await db.delete(posts).where(and(eq(posts.id, id), eq(posts.userId, userId)));
+    const post = (await db.select().from(posts).where(eq(posts.id, id)))[0];
+    if (!post)
+        throw new Error("Post not found")
+
+    if (post.userId !== userId)
+        throw new Error("User not authorized to delete post")
+
+    if (post.deleted)
+        throw new Error("Post already deleted")
+
+    await db.update(posts).set({deleted: true, deletedAt: new Date()}).where(eq(posts.id, id));
 
     revalidatePath("/");
     revalidatePath(`/user/${userId}`);
     revalidatePath(`/post/${id}`);
-    revalidatePath(`/profile`);
+    revalidatePath("/profile");
 }

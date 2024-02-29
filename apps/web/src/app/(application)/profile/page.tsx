@@ -8,6 +8,7 @@ import {Alert, AlertDescription, AlertTitle} from "@ui/components/ui/alert";
 import {Terminal} from "lucide-react";
 import Link from "next/link";
 import {Profile} from "@repo/drizzle/schema";
+import {and} from "drizzle-orm";
 
 export default async function ProfilePage() {
     const supabase = createServerComponentClient<Database>({cookies});
@@ -32,7 +33,7 @@ export default async function ProfilePage() {
     }
 
     const userPosts = await db.query.posts.findMany({
-        where: (posts, {eq}) => eq(posts.userId, userId),
+        where: (posts, {eq}) => and(eq(posts.userId, userId), eq(posts.deleted, false)),
         orderBy: (posts, {desc}) => [desc(posts.createdAt)]
     });
 
@@ -45,11 +46,11 @@ export default async function ProfilePage() {
                     <AlertDescription>
                         <p>
                             Your profile is incomplete. Please fill in the following fields:
-                            <span className="p-1 rounded bg-gray-100 font-mono text-xs ml-1">{nullValues.join(", ")}</span>.
+                            <span
+                                className="p-1 rounded bg-gray-100 font-mono text-xs ml-1">{nullValues.join(", ")}</span>.
                         </p>
                         <p>
-                            For now, this can be done in the <Link href="/onboarding"
-                                                                   className="underline">Onboarding</Link> page.
+                            This can be done in the <Link href="/settings" className="underline">Settings</Link>.
                         </p>
                     </AlertDescription>
                 </Alert>
