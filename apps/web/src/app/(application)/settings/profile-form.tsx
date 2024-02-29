@@ -12,6 +12,9 @@ import {State} from "@/types/actions";
 import {Textarea} from "@ui/components/ui/textarea";
 import {updateProfile} from "@/app/(application)/settings/profile.action";
 import {ProfileFormSchema, profileSchema} from "@/app/(application)/settings/profile.schema";
+import Link from "next/link";
+import {buttonVariants} from "@ui/components/ui/button";
+import {ExternalLinkIcon} from "lucide-react";
 
 type ProfileFormProps = {
     username: string | null;
@@ -131,21 +134,33 @@ export default function ProfileForm({username, displayName, bio, profileImage}: 
                         render={({field}) => (
                             <FormItem>
                                 <FormLabel>Profile Image</FormLabel>
-                                <FormControl>
-                                    <Input className="opacity-50 cursor-not-allowed"
-                                           placeholder="profile image" {...field} readOnly/>
-                                </FormControl>
+
+                                <div className="w-full flex gap-2">
+                                    <FormControl>
+                                        <Input className="opacity-50 cursor-not-allowed"
+                                               placeholder="profile image" {...field} readOnly/>
+                                    </FormControl>
+                                    <Link href="https://gravatar.com/connect"
+                                          className={buttonVariants({variant: "outline"})}
+                                          target="_blank">
+                                        Take me to gravatar
+                                        <ExternalLinkIcon className="ml-2 w-4 h-4 text-muted-foreground"/>
+                                    </Link>
+                                </div>
                                 <FormMessage/>
                                 <FormDescription className="text-sm text-muted-foreground">
-                                    This is the image that represents you across the site.
+                                    This is the image that represents you across the site. It is currently
+                                    managed through gravatar.
                                 </FormDescription>
                             </FormItem>
                         )}
                     />
                 </div>
-                <FormSubmit forcePending={form.formState.isSubmitting}>
-                    Update Profile
-                </FormSubmit>
+                <div className="py-4">
+                    <FormSubmit forcePending={form.formState.isSubmitting}>
+                        Update Profile
+                    </FormSubmit>
+                </div>
             </form>
         </Form>
     );

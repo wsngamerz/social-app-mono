@@ -121,9 +121,11 @@ export default function AccountForm({firstName, lastName}: AccountFormProps) {
                     </div>
 
                 </div>
-                <FormSubmit forcePending={form.formState.isSubmitting}>
-                    Update Account
-                </FormSubmit>
+                <div className="py-4">
+                    <FormSubmit forcePending={form.formState.isSubmitting}>
+                        Update Account
+                    </FormSubmit>
+                </div>
             </form>
         </Form>
     );

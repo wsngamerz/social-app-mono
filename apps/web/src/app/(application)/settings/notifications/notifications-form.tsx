@@ -7,7 +7,7 @@ import {RadioGroup, RadioGroupItem} from "@ui/components/ui/radio-group";
 export function NotificationsForm() {
     return (
         <>
-            <form className="space-y-8 max-w-md">
+            <form className="grid gap-2 max-w-md">
                 <div className="space-y-2">
                     <Label>
                         Notify me about
@@ -36,8 +36,10 @@ export function NotificationsForm() {
                     </RadioGroup>
                 </div>
 
-                <Button type="submit" disabled>Update notifications</Button>
+                <div className="py-4">
+                    <Button type="submit" disabled>Update notifications</Button>
+                </div>
             </form>
         </>
-    )
+)
 }
