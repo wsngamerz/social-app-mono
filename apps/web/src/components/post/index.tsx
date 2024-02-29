@@ -1,3 +1,5 @@
+"use client";
+
 import {Card, CardContent, CardFooter, CardHeader,} from "@repo/ui/components/ui/card";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {Button} from "@repo/ui/components/ui/button";
@@ -15,10 +17,10 @@ import {
 import Markdown from "@/components/shared/markdown";
 import {Post as PostType, Profile} from "@repo/drizzle/schema";
 import ClickWrapper from "@/components/post/click-wrapper";
-import {getUserId} from "@/lib/user";
 import DropdownMenuItemLink from "@/components/shared/dropdown-menu-item-link";
 import DeleteMenuItem from "@/components/post/delete/delete-menu-item";
 import ProfileCard from "@/components/shared/profile-card";
+import {useProfile} from "@/lib/profile";
 
 type PostProps = {
     post: PostType & { user: Profile } & Record<string, unknown>,
@@ -31,8 +33,8 @@ type PostProps = {
     }
 };
 
-export async function Post({post, displayActions = false, statistics}: PostProps) {
-    const currentUserId = await getUserId();
+export function Post({post, displayActions = false, statistics}: PostProps) {
+    const {profile, isError, isLoading} = useProfile();
 
     return (
         <Card>
@@ -53,47 +55,51 @@ export async function Post({post, displayActions = false, statistics}: PostProps
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {currentUserId !== post.user.id && (
+                            {profile && !(isLoading || isError) && (
                                 <>
+                                    {profile.id !== post.user.id && (
+                                        <>
+                                            <DropdownMenuItem>
+                                                <User className="mr-2 h-4 w-4"/>
+                                                <span>Follow @{post.user.username}</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator/>
+                                        </>
+                                    )}
                                     <DropdownMenuItem>
-                                        <User className="mr-2 h-4 w-4"/>
-                                        <span>Follow @{post.user.username}</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator/>
-                                </>
-                            )}
-                            <DropdownMenuItem>
-                                <Heart className="mr-2 h-4 w-4"/>
-                                <span>Like</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Bookmark className="mr-2 h-4 w-4"/>
-                                <span>Bookmark</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Share className="mr-2 h-4 w-4"/>
-                                <span>Share</span>
-                            </DropdownMenuItem>
-                            {currentUserId === post.user.id ? (
-                                <>
-                                    <DropdownMenuSeparator/>
-                                    <DropdownMenuItemLink href={`/post/${post.id}/edit`}>
-                                        <Pencil className="mr-2 h-4 w-4"/>
-                                        <span>Edit</span>
-                                    </DropdownMenuItemLink>
-                                    <DeleteMenuItem id={post.id}/>
-                                </>
-                            ) : (
-                                <>
-                                    <DropdownMenuSeparator/>
-                                    <DropdownMenuItem>
-                                        <Flag className="mr-2 h-4 w-4"/>
-                                        <span>Report</span>
+                                        <Heart className="mr-2 h-4 w-4"/>
+                                        <span>Like</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <ShieldX className="mr-2 h-4 w-4"/>
-                                        <span>Block</span>
+                                        <Bookmark className="mr-2 h-4 w-4"/>
+                                        <span>Bookmark</span>
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Share className="mr-2 h-4 w-4"/>
+                                        <span>Share</span>
+                                    </DropdownMenuItem>
+                                    {profile.id === post.user.id ? (
+                                        <>
+                                            <DropdownMenuSeparator/>
+                                            <DropdownMenuItemLink href={`/post/${post.id}/edit`}>
+                                                <Pencil className="mr-2 h-4 w-4"/>
+                                                <span>Edit</span>
+                                            </DropdownMenuItemLink>
+                                            <DeleteMenuItem id={post.id}/>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <DropdownMenuSeparator/>
+                                            <DropdownMenuItem>
+                                                <Flag className="mr-2 h-4 w-4"/>
+                                                <span>Report</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem>
+                                                <ShieldX className="mr-2 h-4 w-4"/>
+                                                <span>Block</span>
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
                                 </>
                             )}
                         </DropdownMenuContent>

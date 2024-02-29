@@ -1,3 +1,5 @@
+import "server-only";
+
 import supabaseServer from "@/lib/supabaseServer";
 
 export async function getUserId() {

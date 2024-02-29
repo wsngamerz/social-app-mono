@@ -1,5 +1,5 @@
 import ComposeCard from "@/components/post/compose/compose-card";
-import HomepagePosts from "@/app/(application)/homepage-posts";
+import HomepagePosts from "@/components/post/homepage-posts";
 import {Suspense} from "react";
 
 export default async function HomePage() {
