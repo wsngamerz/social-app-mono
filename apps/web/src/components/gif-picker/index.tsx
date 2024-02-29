@@ -1,5 +1,7 @@
 "use client";
 
+import "./styles.override.css";
+
 import GifPickerReact, {type TenorImage, Theme} from 'gif-picker-react';
 import {Popover, PopoverContent, PopoverTrigger} from "@ui/components/ui/popover";
 import {UseFormReturn} from "react-hook-form";
@@ -35,11 +37,12 @@ export default function GifPicker({children, form}: GifPickerProps) {
             <PopoverTrigger asChild onClick={onPopoverClick}>
                 {children}
             </PopoverTrigger>
-            <PopoverContent className="w-fit">
+            <PopoverContent className="w-fit p-0">
                 {apiKey !== "" && (
-                    <GifPickerReact tenorApiKey={apiKey} onGifClick={onGifChosen} theme={(
-                        theme === "dark" ? Theme.DARK : Theme.LIGHT
-                    )}/>
+                    <GifPickerReact
+                        tenorApiKey={apiKey}
+                        onGifClick={onGifChosen}
+                        theme={(theme === "dark" ? Theme.DARK : Theme.LIGHT)}/>
                 )}
             </PopoverContent>
         </Popover>
