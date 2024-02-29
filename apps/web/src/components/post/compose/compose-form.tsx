@@ -23,7 +23,12 @@ import { FormSubmit } from "@/components/shared/form-submit";
 import { composePost } from "@/components/post/compose/compose.action";
 import { State } from "@/types/actions";
 import GifPicker from "@/components/gif-picker";
-import CircleProgress from "@/components/shared/circle-progress";
+import dynamic from "next/dynamic";
+
+const CircleProgress = dynamic(() => import("@/components/shared/circle-progress"), {
+    ssr: false,
+    loading: () => <div className="w-10 h-10 flex items-center justify-center text-muted-foreground">...</div>,
+});
 
 export default function ComposeForm() {
     const [state, formAction] = useFormState<State, FormData>(
