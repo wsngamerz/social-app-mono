@@ -8,8 +8,14 @@
     ],
     "paths": {
         "@/*": ["./src/*"],
-        "@ui/*": ["../../packages/ui/src/*"],
-    }
+        "@ui/*": ["../../packages/ui/src/*"]
+    },
+    "types": [
+      "@serwist/next/typings"
+    ],
+    "lib": [
+      "webworker",
+    ]
   },
   "include": [
     "next-env.d.ts",

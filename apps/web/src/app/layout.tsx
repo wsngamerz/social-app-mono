@@ -16,9 +16,44 @@ const fontSans = FontSans({
     variable: "--font-sans",
 });
 
+const APP_NAME = "SocialApp";
+const APP_DEFAULT_TITLE = "SocialApp";
+const APP_TITLE_TEMPLATE = "%s - SocialApp";
+const APP_DESCRIPTION = "The bestest social app in the world!";
+
 export const metadata: Metadata = {
-    title: "SocialApp",
-    description: "The newest and bestest social media app",
+    applicationName: APP_NAME,
+    title: {
+        default: APP_DEFAULT_TITLE,
+        template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+        title: APP_DEFAULT_TITLE,
+        // startUpImage: [],
+    },
+    formatDetection: {
+        telephone: false,
+    },
+    openGraph: {
+        type: "website",
+        siteName: APP_NAME,
+        title: {
+            default: APP_DEFAULT_TITLE,
+            template: APP_TITLE_TEMPLATE,
+        },
+        description: APP_DESCRIPTION,
+    },
+    twitter: {
+        card: "summary",
+        title: {
+            default: APP_DEFAULT_TITLE,
+            template: APP_TITLE_TEMPLATE,
+        },
+        description: APP_DESCRIPTION,
+    },
 };
 
 export const viewport: Viewport = {
