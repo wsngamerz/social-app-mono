@@ -2,6 +2,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
 })
 
+const withSerwist = require("@serwist/next").default({
+    swSrc: "src/sw.ts",
+    swDest: "public/sw.js",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     transpilePackages: ["@repo/ui"],
@@ -17,4 +22,6 @@ const nextConfig = {
     reactStrictMode: true
 };
 
-module.exports = withBundleAnalyzer(nextConfig)
+module.exports = withBundleAnalyzer(
+    withSerwist(nextConfig)
+)
